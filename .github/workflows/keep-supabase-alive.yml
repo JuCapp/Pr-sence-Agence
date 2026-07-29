@@ -1,0 +1,18 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # Lundi, mercredi et vendredi à 6h UTC (largement avant les 7 jours d'inactivité)
+    - cron: '0 6 * * 1,3,5'
+  workflow_dispatch: # permet de le lancer manuellement depuis l'onglet Actions
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase (vraie requête base de données)
+        run: |
+          curl -s -o /dev/null -w "Réponse Supabase : %{http_code}\n" \
+            "https://ntknnrfhscldrirwirrc.supabase.co/rest/v1/meta?select=key&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50a25ucmZoc2NsZHJpcndpcnJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNzA2ODIsImV4cCI6MjA5Nzk0NjY4Mn0.g3uk6S6pb65tzgLFuQEJXpddkjKHJ5-tzBh0nOTffJ0" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50a25ucmZoc2NsZHJpcndpcnJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNzA2ODIsImV4cCI6MjA5Nzk0NjY4Mn0.g3uk6S6pb65tzgLFuQEJXpddkjKHJ5-tzBh0nOTffJ0"
